@@ -8,3 +8,27 @@
 5.  Print the NFA without ε trantitions and final state
 6.  Stop
 ## Output
+```
+Enter number of transitions:7
+Enter transitions as 
+state symbol state
+0 1 1
+1 1 0
+0 e 2
+2 0 3
+3 0 2
+2 1 4
+4 0 2
+Final states:2
+NFA transitions
+0 1 1
+1 1 0
+0 0 3
+0 1 4
+2 0 3
+3 0 2
+2 1 4
+4 0 2
+Final states : {20}
+```
+
