@@ -21,10 +21,10 @@ void add(char str[], char c)
 void addstate(char c1, char c2)
 {
     for (int i = 0; i < ntrans; i++)
-        if (enfa[i][2] == c1 && enfa[i][1] != 'e')
-            printf("%c %c %c\n", enfa[i][0], enfa[i][1], c2);
-        else if (enfa[i][0] == c2 && enfa[i][1] != 'e')
+        if (enfa[i][0] == c2 && enfa[i][1] != 'e')
             printf("%c %c %c\n", c1, enfa[i][1], enfa[i][2]);
+        else if(enfa[i][0] == c2 && enfa[i][1] == 'e'&&enfa[i][2]!=c1)
+            addstate(c1,enfa[i][2]);
 }
 int main()
 {
