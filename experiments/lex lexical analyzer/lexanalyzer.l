@@ -20,23 +20,23 @@ void |
 switch |
 return |
 else |
-goto	{printf(" keyword" );}
-"/*"	{COMMENT=1;printf(" comment ");}
-\+	{if(!COMMENT)printf(" plus ");}
-\-	{if(!COMMENT)printf(" minus ");}
-\*	{if(!COMMENT)printf(" multiplication ");}
-\/	{if(!COMMENT)printf(" division ");}
-\".*\"	{if(!COMMENT)printf(" String");}
-[0-9]+	{if(!COMMENT)printf(" Number");}
+goto	{printf("keyword" );}
+"/*"	{COMMENT=1;printf("comment ");}
+\+	{if(!COMMENT)printf("plus ");}
+\-	{if(!COMMENT)printf("minus ");}
+\*	{if(!COMMENT)printf("multiplication ");}
+\/	{if(!COMMENT)printf("division ");}
+\".*\"	{if(!COMMENT)printf("String ");}
+[0-9]+	{if(!COMMENT)printf("Number ");}
 \<= |
 \>= |
 \< |
 == |
-\> 	{if(!COMMENT) printf(" Relational operatior ");}
-=	{if(!COMMENT) printf(" Asssignment operatior ");}
-\{	{if(!COMMENT) printf(" Block begin");}
-\}	{if(!COMMENT) printf(" Block end ");}
-{identifier}(\[[0-9]*\])?	{if(!COMMENT) printf(" Identifier ");}
+\> 	{if(!COMMENT) printf("Relational_operator ");}
+=	{if(!COMMENT) printf("Asssignment_operator ");}
+\{	{if(!COMMENT) printf("Block_begin ");}
+\}	{if(!COMMENT) printf("Block_end ");}
+{identifier}(\[[0-9]*\])?	{if(!COMMENT) printf("Identifier ");}
 %%
 int yywrap(){
 	return 1;
