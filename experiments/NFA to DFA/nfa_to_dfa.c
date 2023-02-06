@@ -1,195 +1,126 @@
 #include <stdio.h>
-#include <stdlib.h>
-struct node
+#include <string.h>
+#include <stdbool.h>
+#define MAX_CHARS 26
+struct state
 {
-  int st;
-  struct node *link;
-};
-struct node1
-{
-  int nst[20];
-};
-static int set[20], nostate, noalpha, s, notransition, nofinal, start, finalstate[20], r, buffer[20];
-char c;
-int complete = -1;
-char alphabet[20];
-static int eclosure[20][20] = {0};
-struct node1 hash[20];
-struct node *transition[20][20] = {NULL};
-int findalpha(char c)
-{
-  int i;
-  for (i = 0; i < noalpha; i++)
-    if (alphabet[i] == c)
-      return i;
-  return (999);
-}
-void insert(int r, char c, int s)
-{
-  int j;
-  struct node *temp;
-  j = findalpha(c);
-  if (j == 999)
-  {
-    printf("error\n");
-    exit(0);
-  }
-  temp = (struct node *)malloc(sizeof(struct node));
-  temp->st = s;
-  temp->link = transition[r][j];
-  transition[r][j] = temp;
-}
+    char st[20];
+} st[30];
 
-int compare(struct node1 a, struct node1 b)
+int nt, nf, ns, ds = 0, dsp = 0;
+char start, trans[20][3], final[20], sym[10];
+bool are_same_chars(const char *str1, const char *str2)
 {
-  int i;
-  for (i = 1; i <= nostate; i++)
-  {
-    if (a.nst[i] != b.nst[i])
-      return 0;
-  }
-  return 1;
-}
-
-void printnewstate(struct node1 state)
-{
-  int j;
-  printf("{");
-  for (j = 1; j <= nostate; j++)
-  {
-    if (state.nst[j] != 0)
-      printf("q%d,", state.nst[j]);
-  }
-  printf("}\t");
-}
-void findfinalstate()
-{
-  int i, j, k, t;
-  for (i = 0; i <= complete; i++)
-  {
-    for (j = 1; j <= nostate; j++)
+    int char_count1[MAX_CHARS] = {0}, char_count2[MAX_CHARS] = {0};
+    int len1 = strlen(str1), len2 = strlen(str2);
+    if (len1 != len2)
+        return false;
+    for (int i = 0; i < len1; i++)
     {
-      for (k = 0; k < nofinal; k++)
-      {
-        if (hash[i].nst[j] == finalstate[k])
-        {
-          printnewstate(hash[i]);
-          printf("\t");
-          j = nostate;
-          break;
-        }
-      }
+        char_count1[str1[i] - 'a']++;
+        char_count2[str2[i] - 'a']++;
     }
-  }
+    for (int i = 0; i < MAX_CHARS; i++)
+        if (char_count1[i] != char_count2[i])
+            return false;
+    return true;
 }
-
-int insertdfastate(struct node1 newstate)
-{
-  int i;
-  for (i = 0; i <= complete; i++)
-  {
-    if (compare(hash[i], newstate))
-      return 0;
-  }
-  complete++;
-  hash[complete] = newstate;
-  return 1;
+bool have_common_characters(const char *str1, const char *str2) {
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+    int char_count1[26] = {0};
+    int char_count2[26] = {0};
+    for (int i = 0; i < len1; i++) {
+        char_count1[str1[i] - 'a']++;
+    }
+    for (int i = 0; i < len2; i++) {
+        char_count2[str2[i] - 'a']++;
+    }
+    for (int i = 0; i < 26; i++) {
+        if (char_count1[i] > 0 && char_count2[i] > 0) {
+            return true;
+        }
+    }
+    return false;
 }
-
-void main()
+bool astate(char *str)
 {
-  int i, j, k, m, t, n, l;
-  struct node *temp;
-  struct node1 newstate = {0}, tmpstate = {0};
-  printf("\nEnter No of alphabets and alphabets?\n");
-  scanf("%d", &noalpha);
-  getchar();
-  for (i = 0; i < noalpha; i++)
-  {
-    alphabet[i] = getchar();
-    getchar();
-  }
-  printf("Enter the number of states?\n");
-  scanf("%d", &nostate);
-  printf("Enter the start state?\n");
-  scanf("%d", &start);
-  printf("Enter the number of final states?\n");
-  scanf("%d", &nofinal);
-  printf("Enter the final states?\n");
-  for (i = 0; i < nofinal; i++)
-    scanf("%d", &finalstate[i]);
-  printf("Enter no of transition?\n");
-  scanf("%d", &notransition);
-  printf("Enter transition?\n");
-  for (i = 0; i < notransition; i++)
-  {
-    scanf("%d %c%d", &r, &c, &s);
-    insert(r, c, s);
-  }
-  for (i = 0; i < 20; i++)
-  {
-    for (j = 0; j < 20; j++)
-      hash[i].nst[j] = 0;
-  }
-  complete = -1;
-  i = -1;
-  printf("\n---------------------------------\nEquivalent DFA\n--------------------------------\n");
-  printf("Transitions of DFA\n");
-  newstate.nst[start] = start;
-  insertdfastate(newstate);
-  while (i != complete)
-  {
-    i++;
-    newstate = hash[i];
-    for (k = 0; k < noalpha; k++)
+    for (int i = 0; i < ds; i++)
+        if (are_same_chars(st[i].st, str))
+            return true;
+    return false;
+}
+bool isin(char *str, char c)
+{
+    for (int i = 0; i < strlen(str); i++)
+        if (str[i] == c)
+            return true;
+    return false;
+}
+void dfa()
+{
+    char s[20] = {'\0'};
+    int p = 0, d = 0;
+    while (ds != dsp)
     {
-      c = 0;
-      for (j = 1; j <= nostate; j++)
-        set[j] = 0;
-      for (j = 1; j <= nostate; j++)
-      {
-        l = newstate.nst[j];
-        if (l != 0)
+        for (int i = 0; i < ns; i++)
         {
-          temp = transition[l][k];
-          while (temp != NULL)
-          {
-            if (set[temp->st] == 0)
+            for (int k = 0; k < strlen(st[dsp].st); k++)
+                for (int j = 0; j < nt; j++)
+                    if (st[dsp].st[k] == trans[j][0] && trans[j][1] == sym[i])
+                        if (!isin(s, trans[j][2]))
+                        {
+                            s[p] = trans[j][2];
+                            s[++p] = '\0';
+                        }
+            if (p == 0)
             {
-              c++;
-              set[temp->st] = temp->st;
+                printf("\n%s %c Dead", st[dsp].st, sym[i]);
+                d = 1;
             }
-            temp = temp->link;
-          }
+            else
+            {
+                printf("\n%s %c %s", st[dsp].st, sym[i], s);
+                if (!astate(s))
+                {
+                    strcpy(st[ds++].st, s);
+                }
+            }
+            p = 0;
+            s[p] = '\0';
         }
-      }
-      if (c != 0)
-      {
-        for (m = 1; m <= nostate; m++)
-          tmpstate.nst[m] = set[m];
-        insertdfastate(tmpstate);
-        printnewstate(newstate);
-        printf("%c\t", alphabet[k]);
-        printnewstate(tmpstate);
-        printf("\n");
-      }
-      else
-      {
-        printnewstate(newstate);
-        printf("%c\t", alphabet[k]);
-        printf("NULL\n");
-      }
+        dsp++;
     }
-  }
-  printf("States of DFA:\n");
-  for (i = 0; i <= complete; i++)
-    printnewstate(hash[i]);
-  printf("\nAlphabets:\n");
-  for (i = 0; i < noalpha; i++)
-    printf("%c\t", alphabet[i]);
-  printf("\nStart State:\n");
-  printf("q%d", start);
-  printf("Final states:\n");
-  findfinalstate();
-  printf("\n");
+    if (d)
+        for (int i = 0; i < ns; i++)
+            printf("\nDead %c Dead", sym[i]);
+}
+void finals()
+{
+    printf("\nFinal states:{");
+    for (int i = 0; i < ds; i++)
+        if(have_common_characters(final,st[i].st))
+        printf("%s,",st[i].st);
+    printf("}");
+
+}
+int main()
+{
+    printf("Number of transitions and final state:\n");
+    scanf("%d %d", &nt, &nf);
+    printf("Start state:\n");
+    scanf(" %c", &start);
+    printf("Final states:\n");
+    scanf("%s", final);
+    printf("Symbols:\n");
+    scanf("%s", sym);
+    printf("Transitions:\n");
+    for (int i = 0; i < nt; i++)
+        scanf(" %c %c %c", &trans[i][0], &trans[i][1], &trans[i][2]);
+    ns = strlen(sym);
+    st[ds].st[0] = start;
+    st[ds].st[1] = '\0';
+    ds++;
+    dfa();
+    finals();
 }
