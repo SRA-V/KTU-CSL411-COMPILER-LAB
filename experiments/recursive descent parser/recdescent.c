@@ -18,13 +18,13 @@ int main()
 {
     i = 0;
     error = 0;
-    printf("Enter an arithmetic expression   :  "); // Eg: a+a*a
+    printf("\nEnter an arithmetic expression   :  "); 
     scanf("%s", input);
     E();
     if (strlen(input) == i && error == 0)
-        printf("\nAccepted..!!!\n");
+        printf("\nString accepted..!!!\n");
     else
-        printf("\nRejected..!!!\n");
+        printf("\nString rejected..!!!\n");
 }
 void E()
 {
