@@ -1,9 +1,11 @@
+%option noyywrap
+
 %{
 	int COMMENT=0;
 %}
 identifier [a-zA-Z][a-zA-Z0-9]*
 %%
-#.*	{printf("%s is a preprocessor directive",yytext);}
+#.*	{printf("preprocessor directive");}
 int |
 float |
 char |
@@ -26,6 +28,7 @@ goto	{printf("keyword" );}
 \-	{if(!COMMENT)printf("minus ");}
 \*	{if(!COMMENT)printf("multiplication ");}
 \/	{if(!COMMENT)printf("division ");}
+\;	{if(!COMMENT)printf("semicolon ");}
 \".*\"	{if(!COMMENT)printf("String ");}
 [0-9]+	{if(!COMMENT)printf("Number ");}
 \<= |
@@ -38,9 +41,8 @@ goto	{printf("keyword" );}
 \}	{if(!COMMENT) printf("Block_end ");}
 {identifier}(\[[0-9]*\])?	{if(!COMMENT) printf("Identifier ");}
 %%
-int yywrap(){
-	return 1;
-}
+
 int main(){
+	printf("\nEnter input. press CTRL+d to stop.\n\n");
 	yylex();
 }

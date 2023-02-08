@@ -12,9 +12,18 @@ Implement a Lexical Analyzer for a given program using Lex Tool.
 
 ❯ ./a.out
 
-int a=b+10;
-keyword Identifier Asssignment_operator Identifier plus Number ;
+Enter input. press CTRL+d to stop.
+
+int a=b+5;
+keyword Identifier Asssignment_operator Identifier plus Number semicolon
 
 #include<stdio.h>
-#include<stdio.h> is a preprocessor directive
+preprocessor directive
+
+#define A 10
+preprocessor directive
+
+int x=90;
+keyword Identifier Asssignment_operator Number semicolon
+
 ```
