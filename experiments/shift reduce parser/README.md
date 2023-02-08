@@ -3,10 +3,10 @@ Construct a Shift Reduce Parser for a given language
 
 ## Algorithm
 
-1. Initialize variables:<br>
-    a. buffer: to store the input string<br>
-    b. stk: to store the intermediate results<br>
-    c. len: to store the length of the input string<br>
+1. Initialize variables:
+    1. buffer: to store the input string
+    2. stk: to store the intermediate results
+    3. len: to store the length of the input string
 2. Input the string to be parsed and store it in the buffer
 3. Set the length of the input string to the variable "len"
 4. For each character in the buffer, check if it and the next character form "id".

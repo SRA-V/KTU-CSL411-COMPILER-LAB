@@ -1,4 +1,5 @@
 # NFA to DFA
+Write a program to convert NFA to DFA.
 ## Algorithm
 1. start
 2. Insert transitions,final states,start states and symbols

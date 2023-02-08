@@ -1,11 +1,12 @@
 %{
     #include <stdio.h>
-    int flag=0;
 %}
+
 %token NUMBER
 %left '+' '-'
 %left '*' '/' '%'
 %left '(' ')'
+
 %%
 ArithmeticExpression:E{
     printf("\nResult=%d\n",$$);
@@ -21,12 +22,10 @@ E:E'+'E {$$=$1+$3;}
 ;
 %%
 void main(){
-    printf("Enter arithmetric expression:");
+    printf("\nEnter arithmetric expression:");
     yyparse();
-    if(flag==0)
-    printf("\n\n");
+    printf("\n");
 }
 void yyerror(){
     printf("\nInvalid\n");
-    flag=1;
 }

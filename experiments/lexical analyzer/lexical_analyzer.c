@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+
 bool isDelimiter(char ch){
     char ops[]=" +-*/,;<=>{}[]%";
     return strchr(ops,ch)!=NULL;
