@@ -30,7 +30,7 @@ int main() {
 }
 void check() {
 
-  for (z = 0; z < len; z++)
+  for (z = 0; z <= len; z++)
     if (stk[z] == 'i' && stk[z + 1] == 'd') {
       stk[z] = 'E';
       stk[z + 1] = '\0';
@@ -38,7 +38,7 @@ void check() {
       j++;
     }
 
-  for (z = 0; z < len; z++)
+  for (z = 0; z <= len; z++)
     if (stk[z] == 'E' && stk[z + 1] == '+' && stk[z + 2] == 'E') {
       stk[z] = 'E';
       stk[z + 1] = '\0';
@@ -46,7 +46,7 @@ void check() {
       i = i - 2;
     }
 
-  for (z = 0; z < len; z++)
+  for (z = 0; z <= len; z++)
     if (stk[z] == 'E' && stk[z + 1] == '*' && stk[z + 2] == 'E') {
       stk[z] = 'E';
       stk[z + 1] = '\0';
@@ -54,7 +54,7 @@ void check() {
       i = i - 2;
     }
     
-  for (z = 0; z < len; z++)
+  for (z = 0; z <= len; z++)
     if (stk[z] == '(' && stk[z + 1] == 'E' && stk[z + 2] == ')') {
       stk[z] = 'E';
       stk[z + 1] = '\0';
